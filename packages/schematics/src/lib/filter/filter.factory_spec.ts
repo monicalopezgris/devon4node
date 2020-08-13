@@ -10,13 +10,14 @@ describe('Filter Factory', () => {
     path.join(process.cwd(), 'src/collection.json'),
   );
 
-  it('should manage name only', () => {
+  it('should manage name only and create a spec file', () => {
     const options: object = {
       name: 'filter',
     };
     const tree: UnitTestTree = runner.runSchematic('filter', options);
     const files: string[] = tree.files;
     expect(files.find(filename => filename === '/app/filter.filter.ts')).toBeDefined();
+    expect(files.find(filename => filename === '/app/filter.filter.spec.ts')).toBeDefined();
     expect(tree.readContent('/app/filter.filter.ts')).toEqual(
       "import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';\n" +
       '\n' +
@@ -128,6 +129,24 @@ describe('Filter Factory', () => {
       files.find(filename => filename === '/sourceroot/app/filter.filter.ts'),
     ).toBeDefined();
     expect(tree.readContent('/sourceroot/app/filter.filter.ts')).toEqual(
+      "import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';\n" +
+      '\n' +
+      '@Catch()\n' +
+      'export class FilterFilter<T> implements ExceptionFilter {\n' +
+      '  catch(exception: T, host: ArgumentsHost) {}\n' +
+      '}\n',
+    );
+  });
+  it('should not create spec files', () => {
+    const options: object = {
+      name: 'filter',
+      spec: false
+    };
+    const tree: UnitTestTree = runner.runSchematic('filter', options);
+    const files: string[] = tree.files;
+    expect(files.find(filename => filename === '/app/filter.filter.ts')).toBeDefined();
+    expect(files.find(filename => filename === '/app/filter.filter.spec.ts')).toBeUndefined();
+    expect(tree.readContent('/app/filter.filter.ts')).toEqual(
       "import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';\n" +
       '\n' +
       '@Catch()\n' +
