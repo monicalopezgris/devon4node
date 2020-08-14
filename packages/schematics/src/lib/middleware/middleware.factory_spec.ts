@@ -6,7 +6,7 @@ describe('Middleware Factory', () => {
     '.',
     path.join(process.cwd(), 'src/collection.json'),
   );
-  it('should manage name only', () => {
+  it('should manage name only and create spec file', () => {
     const options: object = {
       name: 'foo',
     };
@@ -14,6 +14,9 @@ describe('Middleware Factory', () => {
     const files: string[] = tree.files;
     expect(
       files.find(filename => filename === '/app/foo.middleware.ts'),
+    ).toBeDefined();
+    expect(
+      files.find(filename => filename === '/app/foo.middleware.spec.ts'),
     ).toBeDefined();
     expect(tree.readContent('/app/foo.middleware.ts')).toEqual(
       "import { Injectable, NestMiddleware } from '@nestjs/common';\n" +
