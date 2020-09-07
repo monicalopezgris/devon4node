@@ -12,13 +12,14 @@ interface ICrudOptions {
 }
 
 function updatePackageJson(path: string): Rule {
+  path = `/${path as Path}/package.json`;
   return (tree: Tree): Tree => {
-    const packageJson = JSON.parse(tree.read(join(path as Path, 'package.json'))!.toString());
+    let packageJson = JSON.parse(tree.read(path)!.toString());
 
     packageJson.dependencies['@nestjsx/crud'] = packagesVersion.nestjsxCrud;
     packageJson.dependencies['@nestjsx/crud-typeorm'] = packagesVersion.nestjsxCrudTypeorm;
 
-    tree.overwrite(join(path as Path, 'package.json'), JSON.stringify(packageJson, null, 2));
+    tree.overwrite(path, JSON.stringify(packageJson, null, 2));
     return tree;
   };
 }
