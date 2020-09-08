@@ -127,30 +127,6 @@ describe('Guard Factory', () => {
       '}\n',
     );
   });
-  it('should manage javascript file', () => {
-    const options: object = {
-      name: 'foo',
-      language: 'js',
-    };
-    const tree: UnitTestTree = runner.runSchematic('guard', options);
-    const files: string[] = tree.files;
-    expect(
-      files.find(filename => filename === '/app/foo.guard.js'),
-    ).toBeDefined();
-    expect(
-      files.find(filename => filename === '/app/foo.guard.spec.js'),
-    ).toBeDefined();
-    expect(tree.readContent('/app/foo.guard.js')).toEqual(
-      "import { Injectable } from '@nestjs/common';\n" +
-      '\n' +
-      '@Injectable()\n' +
-      'export class FooGuard {\n' +
-      '  canActivate(context) {\n' +
-      '    return true;\n' +
-      '  }\n' +
-      '}\n',
-    );
-  });
   it('should be undefined if no spec file', () => {
     const options: object = {
       name: 'foo',
@@ -164,29 +140,5 @@ describe('Guard Factory', () => {
     expect(
       files.find(filename => filename === '/app/foo.guard.ts'),
     ).toBeDefined();
-  });
-  it('should set sourceRoot', () => {
-    const options: object = {
-      name: 'foo',
-      sourceRoot: 'sourceroot',
-    };
-    const tree: UnitTestTree = runner.runSchematic('guard', options);
-    const files: string[] = tree.files;
-    expect(
-      files.find(filename => filename === '/sourceroot/app/foo.guard.ts'),
-    ).toBeDefined();
-    expect(tree.readContent('/sourceroot/app/foo.guard.ts')).toEqual(
-      "import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';\n" +
-      "import { Observable } from 'rxjs';\n" +
-      '\n' +
-      '@Injectable()\n' +
-      'export class FooGuard implements CanActivate {\n' +
-      '  canActivate(\n' +
-      '    context: ExecutionContext,\n' +
-      '  ): boolean | Promise<boolean> | Observable<boolean> {\n' +
-      '    return true;\n' +
-      '  }\n' +
-      '}\n',
-    );
   });
 });

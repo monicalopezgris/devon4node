@@ -100,23 +100,6 @@ describe('Filter Factory', () => {
       '}\n',
     );
   });
-  it('should manage javascript file', () => {
-    const options: object = {
-      name: 'filter',
-      language: 'js',
-    };
-    const tree: UnitTestTree = runner.runSchematic('filter', options);
-    const files: string[] = tree.files;
-    expect(files.find(filename => filename === '/app/filter.filter.js')).toBeDefined();
-    expect(tree.readContent('/app/filter.filter.js')).toEqual(
-      "import { Catch } from '@nestjs/common';\n" +
-      '\n' +
-      '@Catch()\n' +
-      'export class FilterFilter {\n' +
-      '  catch(exception, host) {}\n' +
-      '}\n',
-    );
-  });
   it('should add source root to path', () => {
     const options: object = {
       name: 'filter',
