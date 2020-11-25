@@ -1,0 +1,14 @@
+type Employee {
+  id: Int
+  name: String
+  surname: String
+  email: String
+  version: Int
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  employes: [Employee]
+  employeById(id: Int): Employee
+}
